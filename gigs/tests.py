@@ -4,6 +4,8 @@ from factory.fuzzy import BaseFuzzyAttribute
 from django.contrib.gis.geos import Point
 import factory.django, random
 from django.utils import timezone
+from django.test import RequestFactory
+from django.core.urlresolvers import reverse
 
 class FuzzyPoint(BaseFuzzyAttribute):
     def fuzz(self):
@@ -72,3 +74,17 @@ class EventTest(TestCase):
 
         # Check string representation
         self.assertEqual(only_event.__str__(), 'Queens of the Stone Age - Wembley Arena')
+
+
+class LookupViewTest(TestCase):
+    """
+    Test lookup view
+    """
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def test_get(self):
+        request = self.factory.get(reverse('gigs.lookup'))
+        response = LookupView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.template, 'gigs/lookup.html')
