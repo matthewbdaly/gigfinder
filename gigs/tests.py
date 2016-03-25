@@ -48,6 +48,9 @@ class VenueTest(TestCase):
         # Check attributes
         self.assertEqual(only_venue.name, 'Wembley Arena')
 
+        # Check string representation
+        self.assertEqual(only_venue.__str__(), 'Wembley Arena')
+
 
 class EventTest(TestCase):
     def test_create_event(self):
@@ -66,3 +69,6 @@ class EventTest(TestCase):
         # Check attributes
         self.assertEqual(only_event.name, 'Queens of the Stone Age')
         self.assertEqual(only_event.venue.name, 'Wembley Arena')
+
+        # Check string representation
+        self.assertEqual(only_event.__str__(), 'Queens of the Stone Age - Wembley Arena')
