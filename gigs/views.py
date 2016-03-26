@@ -18,14 +18,17 @@ class LookupView(FormView):
         latitude = form.cleaned_data['latitude']
         longitude = form.cleaned_data['longitude']
 
+        # Get today's date
+        now = timezone.now()
+
         # Get next week's date
-        next_week = timezone.now() + timezone.timedelta(weeks=1)
+        next_week = now + timezone.timedelta(weeks=1)
 
         # Get Point
-        location = Point(latitude, longitude, srid=4326)
+        location = Point(longitude, latitude, srid=4326)
 
         # Look up events
-        events = Event.objects.filter(datetime__lte=next_week).annotate(distance=Distance('venue__location', location)).order_by('distance')[0:2]
+        events = Event.objects.filter(datetime__gte=timezone.now()).filter(datetime__lte=next_week).annotate(distance=Distance('venue__location', location)).order_by('distance')[0:5]
 
         # Render the template
         return render_to_response('gigs/lookupresults.html', {
