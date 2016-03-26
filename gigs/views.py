@@ -28,7 +28,7 @@ class LookupView(FormView):
         location = Point(longitude, latitude, srid=4326)
 
         # Look up events
-        events = Event.objects.filter(datetime__gte=timezone.now()).filter(datetime__lte=next_week).annotate(distance=Distance('venue__location', location)).order_by('distance')[0:5]
+        events = Event.objects.filter(datetime__gte=now).filter(datetime__lte=next_week).annotate(distance=Distance('venue__location', location)).order_by('distance')[0:5]
 
         # Render the template
         return render_to_response('gigs/lookupresults.html', {
