@@ -1,0 +1,9 @@
+{% extends "gigs/includes/base.html" %}
+
+{% block content %}
+    <ul>
+    {% for event in events %}
+    <li>{{ event.name }} - {{ event.venue.name }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
